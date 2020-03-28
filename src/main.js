@@ -3,8 +3,20 @@
 import Vue from 'vue'
 import App from './App'
 import router from './router'
+import VueLazyload from 'vue-lazyload'
+
+import './assets/css/base.css'
+import './assets/css/checkout.css'
+import './assets/css/product.css'
 
 Vue.config.productionTip = false
+
+Vue.use(VueLazyload, {
+  preLoad: 1.3,
+  //error: 'dist/error.png',
+  loading: '/static/loading-svg/loading-bars.svg',
+  attempt: 1
+})
 
 /* eslint-disable no-new */
 new Vue({

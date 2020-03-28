@@ -1,0 +1,15 @@
+
+1、cnpm i axios -S
+2、cnpm i vue-lazyload --save
+   vue-lazyload https://www.npmjs.com/package/npmjs.org
+3、cnpm i express-generator 
+   项目根目录下 运行 express server  将创建server文件夹及其内部其他文件
+4、cnpm i ejs --save    可选安装
+
+5、cnpm i mongoose --save
+
+6 、supervisor  -- 启动nodejs，监听变化 ，不安装
+
+注：
+   express 问题1，定位到html页面错误，需参考官网api
+   https://www.expressjs.com.cn/4x/api.html
