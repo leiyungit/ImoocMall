@@ -10,6 +10,8 @@
 
 6 、supervisor  -- 启动nodejs，监听变化 ，不安装
 
+7、cnpm i vue-infinite-scroll --save  --分页加载 https://www.npmjs.com/
+
 注：
    express 问题1，定位到html页面错误，需参考官网api
    https://www.expressjs.com.cn/4x/api.html

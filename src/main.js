@@ -4,6 +4,7 @@ import Vue from 'vue'
 import App from './App'
 import router from './router'
 import VueLazyload from 'vue-lazyload'
+import infiniteScroll from 'vue-infinite-scroll'
 
 import './assets/css/base.css'
 import './assets/css/checkout.css'
@@ -16,7 +17,9 @@ Vue.use(VueLazyload, {
   //error: 'dist/error.png',
   loading: '/static/loading-svg/loading-bars.svg',
   attempt: 1
-})
+}); // 图片懒加载
+
+Vue.use(infiniteScroll); // 无限滚动
 
 /* eslint-disable no-new */
 new Vue({
