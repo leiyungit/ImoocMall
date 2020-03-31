@@ -65,7 +65,9 @@
               v-infinite-scroll="loadMore"
               infinite-scroll-disabled="busy"
               infinite-scroll-distance="10"
-            >加载中...</div>
+            >
+            <img src="./../assets/loading-spinning-bubbles.svg" v-show="loading" />
+            </div>
           </div>
         </div>
       </div>
@@ -104,7 +106,7 @@ export default {
         },
         {
           startPrice: "1000.00",
-          endPrice: "2000.00"
+          endPrice: "5000.00"
         }
       ],
       filterBy: false,
@@ -112,7 +114,8 @@ export default {
       sortFlag: true,
       page: 1,
       pageSize: 8,
-      busy: false // 如果此属性的值为true，则将禁用无限滚动
+      busy: false, // 如果此属性的值为true，则将禁用无限滚动
+      loading:false
     };
   },
   components: {
@@ -131,12 +134,14 @@ export default {
         sort: this.sortFlag ? 1 : -1,
         priceLevel:this.priceChecked
       };
+      this.loading=true;
       axios
         .get("/api/goods", {
           params: param
         })
         .then(response => {
           console.log(response);
+          this.loading=false;
           let res= response.data;
           if (res.status == "0") {
             if (flag) {

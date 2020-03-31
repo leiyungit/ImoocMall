@@ -32,7 +32,7 @@ router.get("/", function (req, res, next) {
       case "0" : priceGt=0;priceLte=100;break;
       case "1" : priceGt=100;priceLte=500;break;
       case "2" : priceGt=500;priceLte=1000;break;
-      case "3" : priceGt=1000;priceLte=2000;break;
+      case "3" : priceGt=1000;priceLte=5000;break;
     };
     params = {salePrice:{
       $gt:priceGt,
