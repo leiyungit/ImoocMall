@@ -9,9 +9,9 @@ var usersRouter = require('./routes/users');
 var goodsRouter = require('./routes/goods');
 
 var app = express();
-
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
+
 //app.engine('.html',require(ejs).renderFile);
 // 上一行是视频教程代码，可能是nodejs版本问题，抛异常 https://www.expressjs.com.cn/4x/api.html
 app.engine('html', require('ejs').renderFile);
