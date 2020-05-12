@@ -1,7 +1,7 @@
-var express = require('express');
-var router = express.Router();
-var mongoose = require('mongoose');
-var Goods = require('../models/goods');
+let express = require('express');
+let router = express.Router();
+let mongoose = require('mongoose');
+let Goods = require('../models/goods');
 
 
 mongoose.connect("mongodb://localhost:27017/imoocmall");

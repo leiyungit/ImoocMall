@@ -46,12 +46,14 @@
         </div>
         <div class="navbar-right-container" style="display: flex;">
           <div class="navbar-menu-container">
-            <span class="navbar-link" ></span>
+            <span class="navbar-link" v-text="nickName" v-if="nickName"></span>
             <a
               href="javascript:void(0)"
               class="navbar-link"
+              @click="loginModalFlag=true"
+              v-show="!nickName"
             >Login</a>
-            <a href="javascript:void(0)" class="navbar-link" >Logout</a>
+            <a href="javascript:void(0)" class="navbar-link" v-show="nickName" >Logout</a>
             <div class="navbar-cart-container">
               <span class="navbar-cart-count" ></span>
               <a class="navbar-link navbar-cart-link" href="/#/cart">
@@ -67,12 +69,12 @@
         <div class="md-modal-inner">
           <div class="md-top">
             <div class="md-title">Login in</div>
-            <button class="md-close" >Close</button>
+            <button class="md-close" @click="loginModalFlag=false;errorTip=false;">Close</button>
           </div>
           <div class="md-content">
             <div class="confirm-tips">
               <div class="error-wrap">
-                <span class="error error-show" >用户名或者密码错误</span>
+                <span class="error error-show" v-show="errorTip" >用户名或者密码错误</span>
               </div>
               <ul>
                 <li class="regi_form_input">
@@ -84,6 +86,7 @@
                     class="regi_login_input regi_login_input_left"
                     placeholder="User Name"
                     data-type="loginname"
+                    v-model="userName"
                   />
                 </li>
                 <li class="regi_form_input noMargin">
@@ -94,26 +97,57 @@
                     name="password"
                     class="regi_login_input regi_login_input_left login-input-no input_text"
                     placeholder="Password"
+                    v-model="userPwd"
                   />
                 </li>
               </ul>
             </div>
             <div class="login-wrap">
-              <a href="javascript:;" class="btn-login" >登 录</a>
+              <a href="javascript:;" class="btn-login" @click="login">登 录</a>
             </div>
           </div>
         </div>
       </div>
-      <div class="md-overlay" v-if="loginModalFlag" ></div>
+      <div class="md-overlay" v-if="loginModalFlag" @click="loginModalFlag=false;errorTip=false;"></div>
     </header>
 </template>
 <script>
+import '../assets/css/login.css';
+import axios from 'axios';
 export default {
   data() {
     return {
+      userName:'',
+      userPwd:'',
       errorTip:false,
-      loginModalFlag:false
+      loginModalFlag:false,
+      nickName:''
     };
+  },
+  methods:{
+    login(){
+      if(!this.userName || !this.userPwd){
+        this.errorTip=true;
+        return;
+      }
+      axios.post("/api/users/login",{
+        userName:this.userName,
+        userPwd:this.userPwd
+      }).then(res=>{
+          console.log(res)
+          if(res.data.status===200){
+            this.loginModalFlag=false;
+            this.errorTip=false;
+            this.nickName=res.data.result.username;
+            this.userName='';
+            this.userPwd='';
+          }else{
+            this.errorTip=true;
+          }
+      }).catch(err=>{
+          console.log(err)
+      });
+    }
   }
 };
 </script>

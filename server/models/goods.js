@@ -1,7 +1,7 @@
-var mongoose=require("mongoose");
-var Schema=mongoose.Schema;
+let mongoose=require("mongoose");
+let Schema=mongoose.Schema;
 
-var productSchema=new Schema({
+let productSchema=new Schema({
     "productId":{type:String},
     "prodectName": String,
     "salePrice":Number,
