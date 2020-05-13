@@ -53,7 +53,7 @@
               @click="loginModalFlag=true"
               v-show="!nickName"
             >Login</a>
-            <a href="javascript:void(0)" class="navbar-link" v-show="nickName" >Logout</a>
+            <a href="javascript:void(0)" class="navbar-link" @click="logout" v-show="nickName" >Logout</a>
             <div class="navbar-cart-container">
               <span class="navbar-cart-count" ></span>
               <a class="navbar-link navbar-cart-link" href="/#/cart">
@@ -124,7 +124,19 @@ export default {
       nickName:''
     };
   },
+  mounted(){
+    this.checkLogin();
+  },
   methods:{
+    checkLogin(){
+      axios.get('/api/users/checkLogin').then((res)=>{
+        if(res.data.status === 200){
+          this.nickName = res.data.result;
+        }else{
+          this.nickName = '';
+        }
+      })
+    },
     login(){
       if(!this.userName || !this.userPwd){
         this.errorTip=true;
@@ -146,6 +158,14 @@ export default {
           }
       }).catch(err=>{
           console.log(err)
+      });
+    },
+    logout(){
+      axios.post('/api/users/logout').then((res)=>{
+        console.log(res.data);
+        if(res.data.status===200){
+          this.nickName='';
+        }
       });
     }
   }

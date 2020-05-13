@@ -61,4 +61,12 @@ router.get("/", function (req, res, next) {
   })
 });
 
+router.post('/addCart',function(req,res,next){
+
+  res.json({
+    status:200,
+    msg:'',
+    result:''
+  });
+})
 module.exports = router;
