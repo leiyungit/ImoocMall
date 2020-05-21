@@ -61,18 +61,40 @@
                 </div>
               </li>
             </ul>
-            <div class="load-more"
+            <div
+              class="load-more"
               v-infinite-scroll="loadMore"
               infinite-scroll-disabled="busy"
               infinite-scroll-distance="10"
             >
-            <img src="./../assets/loading-spinning-bubbles.svg" v-show="loading" />
+              <img src="./../assets/loading-spinning-bubbles.svg" v-show="loading" />
             </div>
           </div>
         </div>
       </div>
     </div>
     <div class="md-overlay" v-show="overLayFlag" @click.stop="closePop"></div>
+    <!-- 加入购物车前检查未登录 -->
+    <modal :modalShow="modalShow" @close="closeModal">
+      <p slot="message">请先登录，才可以加入到购物车！</p>
+      <div slot="btnGrop">
+        <a href="javascript:;" class="btn btn--m" @click="closeModal">关闭</a>
+      </div>
+    </modal>
+    <!-- 加入购物车成功 -->
+    <modal :modalShow="modalShowCart" @close="closeModal">
+      <p slot="message">
+         <!-- svg 图标未显示 -->
+        <svg class="icon-status-ok">
+          <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#icon-status-ok" />
+        </svg>
+        <span>加入到购物车成功！</span>
+      </p>
+      <div slot="btnGrop">
+        <a href="javascript:;" class="btn btn--m" @click="modalShowCart=false">继续购物</a>
+        <router-link href="javascript:;" class="btn btn--m" to="/cart">查看购物车</router-link>
+      </div>
+    </modal>
     <nav-footer></nav-footer>
   </div>
 </template>
@@ -83,6 +105,7 @@ import "./../assets/css/product.css";
 import NavHeader from "./../components/NavHeader";
 import NavFooter from "./../components/NavFooter";
 import NavBread from "./../components/NavBread";
+import Modal from "./../components/Modal";
 
 import axios from "axios";
 
@@ -115,13 +138,16 @@ export default {
       page: 1,
       pageSize: 8,
       busy: false, // 如果此属性的值为true，则将禁用无限滚动
-      loading:false
+      loading: false,
+      modalShow: false,
+      modalShowCart: false
     };
   },
   components: {
     NavHeader,
     NavFooter,
-    NavBread
+    NavBread,
+    Modal
   },
   mounted() {
     this.getGoodsList();
@@ -132,17 +158,17 @@ export default {
         page: this.page,
         pageSize: this.pageSize,
         sort: this.sortFlag ? 1 : -1,
-        priceLevel:this.priceChecked
+        priceLevel: this.priceChecked
       };
-      this.loading=true;
+      this.loading = true;
       axios
         .get("/api/goods", {
           params: param
         })
         .then(response => {
           console.log(response);
-          this.loading=false;
-          let res= response.data;
+          this.loading = false;
+          let res = response.data;
           if (res.status == "0") {
             if (flag) {
               if (res.result.list.length > 0) {
@@ -150,23 +176,28 @@ export default {
               }
               if (res.result.list.length < this.pageSize) {
                 this.busy = true;
-              }else{
-                 this.busy = false; // 漏写
+              } else {
+                this.busy = false; // 漏写
               }
             } else {
               this.goodsList = res.result.list;
               this.busy = false;
             }
-          }else{
+          } else {
             this.goodsList = [];
           }
         });
     },
-    addCart(){
-      axios.post('/api/goods/addCart').then((res)=>{
+    addCart() {
+      axios.post("/api/goods/addCart").then(res => {
         console.log(res.data);
-        if(res.data.status === 200){
+        if (res.data.status === 200) {
           console.log(res.data);
+          //alert("加入成功");
+          this.modalShowCart = true;
+        } else {
+          //alert(res.data.msg);
+          this.modalShow = true;
         }
       });
     },
@@ -189,7 +220,7 @@ export default {
       // 点击价格区间
       this.priceChecked = index;
       this.closePop();
-      this.page=1;
+      this.page = 1;
       this.getGoodsList();
     },
     showFilterPop() {
@@ -199,6 +230,10 @@ export default {
     closePop() {
       this.filterBy = false;
       this.overLayFlag = false;
+    },
+    closeModal() {
+      this.modalShow = false;
+      this.modalShowCart = false;
     }
   }
 };
@@ -207,7 +242,7 @@ export default {
 .container {
   background-color: #fff;
 }
-.load-more{
+.load-more {
   height: 100px;
   line-height: 100px;
   text-align: center;
