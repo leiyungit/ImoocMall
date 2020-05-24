@@ -82,4 +82,11 @@ router.get('/checkLogin',function(req,res,next){
   }
 });
 
+router.get('/cartList',function(req,res,next){
+  res.json({
+    status:200,
+    msg:'',
+    result:[{productName:'test1',productImage:'1.jpg',salePrice:100,productNum:11}]
+  });
+});
 module.exports = router;

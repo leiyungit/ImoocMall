@@ -56,7 +56,7 @@
             <a href="javascript:void(0)" class="navbar-link" @click="logout" v-show="nickName" >Logout</a>
             <div class="navbar-cart-container">
               <span class="navbar-cart-count" ></span>
-              <a class="navbar-link navbar-cart-link" href="/#/cart">
+              <a class="navbar-link navbar-cart-link" href="/cart">
                 <svg class="navbar-cart-logo">
                   <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#icon-cart" />
                 </svg>
@@ -98,6 +98,7 @@
                     class="regi_login_input regi_login_input_left login-input-no input_text"
                     placeholder="Password"
                     v-model="userPwd"
+                    @keyup.enter="login"
                   />
                 </li>
               </ul>
